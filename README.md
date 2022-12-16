@@ -69,7 +69,7 @@ There are three places where permissions need to be set
 ![get_file_success](doc/imgs/get_file_success.jpg)
 
 
-## s3 struct
+## S3 Struct
 
 It is a globally uniquely named bucket, and its structure is as follows
 
@@ -157,7 +157,7 @@ Let's list up to 10 buckets for your account.
         yuki-mytest-bucket
 ```
 
-## go code
+## Go Code
 ### Init Sdk
 ```go
 type BucketBasics struct {
@@ -176,7 +176,7 @@ func NewS3Client() *BucketBasics {
 ```
 
 ### [Bucket Example](examples/example02_bucket/bucket_test.go)
->#### create
+>#### Create
 ```go
 func (basics BucketBasics) CreateBucket(name string, region string) error {
 	_, err := basics.S3Client.CreateBucket(context.TODO(), &s3.CreateBucketInput{
@@ -236,7 +236,7 @@ func (s *S3Base) BucketExists(bucketName string) (bool, error) {
 
 ```
 
->#### delete
+>#### Delete
 ```go
 func (s *S3Base) DeleteBucket(bucketName string) error {
 	_, err := s.S3Client.DeleteBucket(context.TODO(), &s3.DeleteBucketInput{
@@ -452,7 +452,7 @@ func (s *S3Base) DeleteObjectListByKeys(bucketName string, objectKeys []string) 
 }
 ```
 
-### Permission
+### [Permission](examples/example04_permission/premission_test.go)
 >#### Bucket
 ```go
 func (s *S3Base) CreatePublicBucket(bucketName, region string) error {
@@ -537,7 +537,7 @@ Bucket version status
 2. Enabled version control (note: once enabled, it cannot be restored)
 3. Suspend version control
 
-### Enabled version control
+### [Enabled version control](examples/example05_version/version_test.go)
 
 It can be seen that after the version control is started, there is an additional version display (hidden) button. After clicking, you can see the version. The nil version is a previously uploaded image, so it has no version. After enabling version control, s3 will add a 32-bit version number to it
 
@@ -564,11 +564,11 @@ func (s *S3Base) CreateBucketAndEnabledVersion(bucketName, region string) error 
 	return nil
 }
 ```
-1. Add
+>#### Add
 ```go
 s3Action.UploadFile(bucket, filename, key)
 ```
-2. Recover
+>#### Recover
 ```go
 func (s *S3Base) GetObjectVersionList(bucketName string) ([]types.ObjectVersion, error) {
 	input := &s3.ListObjectVersionsInput{
@@ -600,7 +600,7 @@ func (s *S3Base) GetObjectByVersion(bucketName, objectKey, versionId string) (st
 	return buf.String(), err
 }
 ```
-3. Del
+>#### Del
 ```go
 func (s *S3Base) DeleteObjectByVersion(bucketName, objectKey, versionId string) error {
 	input := &s3.DeleteObjectInput{
