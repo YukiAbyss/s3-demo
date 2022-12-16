@@ -1,53 +1,51 @@
-<!--ts-->
-<!--te-->
-
-# S3 Demo
+# s3 demo
 
 ## [What is Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html)
-It is a file service that can store png, jpg, csv, html and other files. Saved and publicly accessible
+它是一种文件服务，上面可以存储png, jpg, csv, html等一些文件。存上去了，可以公开访问
 
-## [How to use amazon s3](https://s3.console.aws.amazon.com/s3/buckets?region=us-east-1)
+## [怎么使用 amazon s3](https://s3.console.aws.amazon.com/s3/buckets?region=us-east-1)
 
-### Register Account
-First, you must register an aws account, which requires a visa card to register. After registration, you can enjoy the 5G space of s3, which can be used for free for 12 months.
+### 注册账户
+首先得先注册一个 aws 账户，它需要 visa 卡， 才能进行注册。注册后，可以享受 s3 的 5G 空间，可以使用12个月。
 
 ![aws_free_bucket](doc/imgs/amazon_free_bucket.jpg)
 
-# Use S3
+### 进入 s3
 
-## Create Bucket
-Normal creation, all go through the default process, and finally access the image address, there will be such a prompt, this kind of problem is that the obejct permission is not enabled
+
+### 创建 bucket
+正常创建，全部走默认流程，最终访问图片地址，会出现这样的提示，这种问题是没有打开obejct权限
 
 ![image.png](doc/imgs/get_file_err.jpg)
 
-## Permission settings
-There are three places where permissions need to be set
-- object ownership (ACL)，When creating a bucket, you need to enable it. It is used to control the permission of the object. If it is not activated, the object permission column will be gray.
+### 权限设置
+有三个地方需要设置权限
+- object ownership (ACL)，在创建 bucket 时，需要设置启动它，它是用来控制 object 的权限的，如果未启动，object 权限栏，将会是灰色的。
 ![object_ownership](doc/imgs/object_ownership.jpg)
 
-- block public access setting, It is used to prevent others from accessing your object. If checked, will block everyone except you
+- block public access setting，它是用来阻止别人来访问你的object的。如果勾选的，将会阻止除了你以外的所有人
 ![block public access setting](doc/imgs/block%20_public_access_setting.jpg)
 
-- Access control list (ACL)，If the bucket ACL is not set, it will be grayed out and cannot be set. If the ACL is enabled, it can be set for others to access.
+- Access control list (ACL)，如果未设置 bucket ACL，这里将会是灰色的，不能设置，启动了ACL，就可以设置让其他人访问了。
 ![Access control list (ACL)](doc/imgs/object_acl.jpg)
 
-- After setting, visit again, you can see the file
+- 设置后，再次访问，就可以看到文件了
 ![get_file_success](doc/imgs/get_file_success.jpg)
 
 
-## s3 struct
+## s3 架构
 
-It is a globally uniquely named bucket, and its structure is as follows
+它是以一个全球唯一命名 bucket， 它的结构如下
 
 ![s3](doc/imgs/s3.png)
 
 
-# [AWS SDK for Go](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/UsingAWSSDK.html#sdk-general-information-section)
-You can read the source code of aws sdk for go here, and browse the aws provided by[code example](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/service_code_examples.html)
+## [AWS SDK for Go](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/UsingAWSSDK.html#sdk-general-information-section)
+可以在这里阅读 aws sdk for go 的源码，可以在浏览 aws 提供的[代码示例](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/service_code_examples.html)
 
-## [AWS SDK for go getting-started](https://aws.github.io/aws-sdk-go-v2/docs/getting-started/)
+### [AWS SDK for go getting-started](https://aws.github.io/aws-sdk-go-v2/docs/getting-started/)
 
-First, you have to register an AWS account, and then get the Keys of the account.
+首先得注册AWS账户，然后拿到账户的 Account Keys，
 
 ![getAccount](doc/imgs/aws%20account.jpg)
 
@@ -55,8 +53,8 @@ Create Access Key
 
 ![create access key](doc/imgs/create%20access%20key.jpg)
 
-After setting, you can get Keys. With the keys, you need to set up the key environment of the machine, and I use aws cli to set it here.
-1. Install aws cli in mac
+设置好了，可以拿到Keys。有了keys，需要设置本机的密钥环境，我这边时用 aws cli 来设置的。
+1. mac 下安装 aws cli
 ```bash
 $ curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
 $ sudo installer -pkg AWSCLIV2.pkg -target /
@@ -65,7 +63,7 @@ $ which aws
 $ aws --version
 ```
 
-2. Set Key
+2. 设置密钥
 ```bash
 $ aws configure       
 AWS Access Key ID : xxx
@@ -81,7 +79,7 @@ drwxr-x---+ 50 yy  staff  1600 12 15 00:11 ..
 -rw-------   1 yy  staff   116 12 15 00:09 credentials
 ```
 
-3. Check whether the setting is successful
+3. 检查是否设置成功
 ```zsh
 $ aws s3 ls
 2022-12-14 22:48:01 yuki-mytest-bucket
@@ -124,7 +122,7 @@ Let's list up to 10 buckets for your account.
 ```
 
 ## go code
-### Init Sdk
+### init sdk
 ```go
 type BucketBasics struct {
 	S3Client *s3.Client
@@ -141,7 +139,7 @@ func NewS3Client() *BucketBasics {
 }
 ```
 
-### [Bucket Example](examples/example02_bucket/bucket_test.go)
+### [bucket Example](examples/example02_bucket/bucket_test.go)
 >#### create
 ```go
 func (basics BucketBasics) CreateBucket(name string, region string) error {
@@ -215,7 +213,7 @@ func (s *S3Base) DeleteBucket(bucketName string) error {
 ```
 
 
-### [Object Example](examples/example03_object/object_test.go)
+### [object Example](examples/example03_object/object_test.go)
 >#### Upload and Download
 ```go
 func (s *S3Base) UploadFile(bucketName string, objectKey string, fileName string) error {
@@ -418,8 +416,8 @@ func (s *S3Base) DeleteObjectListByKeys(bucketName string, objectKeys []string) 
 }
 ```
 
-### Permission
->#### Bucket
+### permission
+>#### bucket
 ```go
 func (s *S3Base) CreatePublicBucket(bucketName, region string) error {
 	input := &s3.CreateBucketInput{
@@ -449,7 +447,7 @@ func (s *S3Base) PutPublicBucketAcl(bucketName string) error {
 }
 ```
 
->#### Object
+>#### object
 ```go
 func (s *S3Base) UploadPublicFileAcl(bucketName, objectKey, fileName string) error {
 	file, err := os.Open(fileName)
@@ -493,23 +491,23 @@ func (s *S3Base) PutPublicObjectAcl(bucketName, objectKey string) error {
 
 ```
 
-### Object Version Control
-Version control, as its name suggests, uses version control to control it. Its advantage is that when deleting an object, it is not physically deleted, but a mark is placed on the deletion. Therefore, if the file is deleted by an operation other than the user, it can be restored through version control.
+### object version 控制
+版本控制，如其名就是利用版本控制它，它是好处，就是在删除对象的时候，不是物理删除，而是给删除打上一个标记。所以，如果用户以外的操作，把这个文件给删除了，是可以通过版本控制进行恢复的。
 
-If the user is overwriting this object, it is actually creating a new version of this object.
+如果用户是覆盖这个对象，其实是给这个对象创建一个新的版本。
 
 Bucket version status
-1. Unversioned (default)
-2. Enabled version control (note: once enabled, it cannot be restored)
-3. Suspend version control
+1. 非版本化 (默认)
+2. 启动版本控制 (注意:一旦启用，无法恢复，是不可逆的操作)
+3. 暂停版本控制
 
-### Enabled version control
+### 启用版本控制
 
-It can be seen that after the version control is started, there is an additional version display (hidden) button. After clicking, you can see the version. The nil version is a previously uploaded image, so it has no version. After enabling version control, s3 will add a 32-bit version number to it
+可以看到，启动版本控制之后，多了一个版本显示(隐藏)的按钮，点击后，可以看到版本。启动nil的版本，是以前上传的图片，所以它是没有版本的。启用版本控制之后，s3会给它增加一个32位的版本号
 
 ![version_object](doc/imgs/version_object.jpg)
 
-0. Set You need to create a bucket before setting it up
+0. Set 需要创建bucket后，再进行设置
 ```go
 func (s *S3Base) CreateBucketAndEnabledVersion(bucketName, region string) error {
 	err := s.CreatePublicBucket(bucketName, region)
@@ -583,34 +581,34 @@ func (s *S3Base) DeleteObjectByVersion(bucketName, objectKey, versionId string) 
 ```
 
 
-## S3 Pricing
-[Price Details](https://aws.amazon.com/s3/pricing/)
-[Price calculator](https://calculator.aws/#/addService)
-1. Storage
-	- First 50TB/month -> 0.023$/GB
-	- After 450TB/month -> 0.022$/GB
-	- Over 500TB/month -> 0.021$/GB
-2. Requests
+## 定价
+[价格详情](https://aws.amazon.com/s3/pricing/)
+[价格计算器](https://calculator.aws/#/addService)
+1. 存储
+	- 前 50TB/月 -> 0.023$/GB
+	- 后 450TB/月 -> 0.022$/GB
+	- 超过 500TB/月 -> 0.021$/GB
+2. 请求
 	- 1000/req -> 0.005$
-3. Transfer
-	- TransferIn aws -> free
-	- aws TransferOut internet First 10TB/month -> 0.09$/GB
-	- aws TransferOut internet Next 40TB/month -> 0.85$/GB
-	- aws TransferOut internet After 100TB/month -> 0.07$/GB
-	- aws TransferOut internet Over 150TB/month -> 0.05$/GB
-4. Management
-	- Store millions of objects -> 0.0025$
-	- Monitor millions of objects -> 0.1$
-	- Mark 10,000 objects -> 0.01$
-5. Replication
-	- Replication millions of objects -> 1$
+3. 传输
+	- 传入 aws -> 不收钱
+	- aws 传出 internet 10TB/月 -> 0.09$/GB
+	- aws 传出 internet 40TB/月 -> 0.85$/GB
+	- aws 传出 internet 100TB/月 -> 0.07$/GB
+	- aws 传出 internet 大于150TB/月 -> 0.05$/GB
+4. 管理
+	- 存储百万对象 -> 0.0025$
+	- 监控百万对象 -> 0.1$
+	- 标记1万对象 -> 0.01$
+5. 复制
+	- 百万对象 -> 1$
 6. lambda
 	- s/GB -> 0.0000167$
 	- M/req -> 0.2$
 
-## What Else?
-- [x] [Extract text from images](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/example_cross_TextractComprehendDetectEntities_section.html)
-- [x] [Extract faces from images](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/example_cross_DetectFaces_section.html)
-- [x] [Extract objects from pictures](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/example_cross_RekognitionPhotoAnalyzer_section.html)
-- [x] [Extract people from video](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/example_cross_RekognitionVideoDetection_section.html)
-- [x] [Convert text to speech](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/example_cross_Telephone_section.html)
+## 还有什么？
+- [x] [从图片中提取文本](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/example_cross_TextractComprehendDetectEntities_section.html)
+- [x] [从图片中提取人脸](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/example_cross_DetectFaces_section.html)
+- [x] [从图片中提取对象](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/example_cross_RekognitionPhotoAnalyzer_section.html)
+- [x] [从视频中提取人物](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/example_cross_RekognitionVideoDetection_section.html)
+- [x] [将文本转换为语音](https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/example_cross_Telephone_section.html)

@@ -1,9 +1,6 @@
 package example03object
 
 import (
-	"bytes"
-	"context"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"s3-demo/core/s3action"
 	"s3-demo/log"
 	"testing"
@@ -13,7 +10,7 @@ import (
 
 type ObjectSuite struct {
 	suite.Suite
-	S3Action   *s3action.BucketBasics
+	S3Action   *s3action.S3Base
 	BucketName string
 	Region     string
 	FileName   string
@@ -28,56 +25,48 @@ func (s *ObjectSuite) SetupSuite() {
 	s.S3Action = s3action.NewS3Client()
 	s.BucketName = "yuki-testobject-2022-12"
 	s.Region = "us-west-2"
-
 	s.FileName = "test.csv"
 	s.ObjectKey = "yuki-test-object-csv"
+	// s.NoError(s.S3Action.CreateBucket(s.BucketName, s.Region))
 }
 
-func (s *ObjectSuite) Test01CreateBucket() {
-	err := s.S3Action.CreateBucket(s.BucketName, s.Region)
-	s.NoError(err)
+func (s *ObjectSuite) TearDownSuite() {
+	// s.NoError(s.S3Action.DeleteBucket(s.BucketName))
 }
 
-func (s *ObjectSuite) Test02Upload() {
+func (s *ObjectSuite) Test01Upload() {
 	err := s.S3Action.UploadFile(s.BucketName, s.ObjectKey, s.FileName)
 	s.NoError(err)
 }
 
-func (s *ObjectSuite) Test03GetObjectList() {
-	objects, err := s.S3Action.ListObjects(s.BucketName)
+func (s *ObjectSuite) Test02GetObjectList() {
+	objects, err := s.S3Action.GetObjectList(s.BucketName)
 	s.NoError(err)
-	log.Infof("get object list: %v", objects)
 	for _, obj := range objects {
-		log.Infof("object: %+v", obj.Key)
+		log.Infof("object: %v", *obj.Key)
+		log.Infof("object: %v", *obj.ETag)
 	}
 }
 
-func (s *ObjectSuite) TestGetObject() {
-	input := &s3.GetObjectInput{
-		Bucket: &s.BucketName,
-		Key:    &s.ObjectKey,
-	}
-	obj, err := s.S3Action.S3Client.GetObject(context.TODO(), input)
+func (s *ObjectSuite) Test03GetObject() {
+	s2, err := s.S3Action.GetObjectContent(s.BucketName, s.ObjectKey)
 	s.NoError(err)
-	log.Infof("get obj: %+v", obj)
-	log.Infof("mate: %v", obj.Metadata)
-
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(obj.Body)
-	myFileContentAsString := buf.String()
-	log.Infof("obj data: %v", myFileContentAsString)
+	log.Infof("get obj: %v", s2)
 }
 
-func (s *ObjectSuite) TestCopyObjectInBucket() {
+func (s *ObjectSuite) Test04GetObjectUrl() {
+	s2, err := s.S3Action.GetObjectUrl(s.BucketName, s.ObjectKey)
+	s.NoError(err)
+	log.Infof("get obj: %v", s2)
 }
 
-func (s *ObjectSuite) TestDeleteObjectList() {
-	objects, err := s.S3Action.ListObjects(s.BucketName)
+func (s *ObjectSuite) Test04DeleteObjectListByKeys() {
+	objects, err := s.S3Action.GetObjectList(s.BucketName)
 	keyList := make([]string, len(objects))
 	for i, obj := range objects {
 		keyList[i] = *obj.Key
 	}
 	s.NoError(err)
-	err = s.S3Action.DeleteObjects(s.BucketName, keyList)
+	err = s.S3Action.DeleteObjectListByKeys(s.BucketName, keyList)
 	s.NoError(err)
 }
