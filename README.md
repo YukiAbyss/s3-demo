@@ -1,4 +1,38 @@
 <!--ts-->
+* [S3 Demo](#s3-demo)
+   * [<a href="https://docs.aws.amazon.com/AmazonS3/latest/userguide/Welcome.html" rel="nofollow">What is Amazon S3</a>](#what-is-amazon-s3)
+   * [<a href="https://s3.console.aws.amazon.com/s3/buckets?region=us-east-1" rel="nofollow">How to use amazon s3</a>](#how-to-use-amazon-s3)
+      * [Register Account](#register-account)
+* [Use S3](#use-s3)
+   * [Create Bucket](#create-bucket)
+   * [Permission settings](#permission-settings)
+   * [s3 struct](#s3-struct)
+* [<a href="https://docs.aws.amazon.com/zh_cn/AmazonS3/latest/userguide/UsingAWSSDK.html#sdk-general-information-section" rel="nofollow">AWS SDK for Go</a>](#aws-sdk-for-go)
+   * [<a href="https://aws.github.io/aws-sdk-go-v2/docs/getting-started/" rel="nofollow">AWS SDK for go getting-started</a>](#aws-sdk-for-go-getting-started)
+      * [<a href="examples/example01_hello/main.go">HelloWorld Hello S3</a>](#helloworld-hello-s3)
+   * [go code](#go-code)
+      * [Init Sdk](#init-sdk)
+      * [<a href="examples/example02_bucket/bucket_test.go">Bucket Example</a>](#bucket-example)
+         * [create](#create)
+         * [QueryList](#querylist)
+         * [IsExists](#isexists)
+         * [delete](#delete)
+      * [<a href="examples/example03_object/object_test.go">Object Example</a>](#object-example)
+         * [Upload and Download](#upload-and-download)
+         * [QueryList](#querylist-1)
+         * [QueryInfo](#queryinfo)
+         * [Delete](#delete-1)
+      * [Permission](#permission)
+         * [Bucket](#bucket)
+         * [Object](#object)
+      * [Object Version Control](#object-version-control)
+      * [Enabled version control](#enabled-version-control)
+   * [S3 Pricing](#s3-pricing)
+   * [What Else?](#what-else)
+
+<!-- Created by https://github.com/ekalinin/github-markdown-toc -->
+<!-- Added by: runner, at: Fri Dec 16 02:35:49 UTC 2022 -->
+
 <!--te-->
 
 # S3 Demo
