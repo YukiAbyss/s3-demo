@@ -200,13 +200,10 @@ func (basics BucketBasics) CreateBucket(name string, region string) error {
 ```go
 func (s *S3Base) GetBucketList() ([]types.Bucket, error) {
 	result, err := s.S3Client.ListBuckets(context.TODO(), &s3.ListBucketsInput{})
-	var buckets []types.Bucket
 	if err != nil {
 		log.Printf("Couldn't list buckets for your account. Here's why: %v\n", err)
-	} else {
-		buckets = result.Buckets
 	}
-	return buckets, err
+	return result.Buckets, err
 }
 ```
 
@@ -621,8 +618,11 @@ func (s *S3Base) DeleteObjectByVersion(bucketName, objectKey, versionId string) 
 
 
 ## S3 Pricing
-[Price Details](https://aws.amazon.com/s3/pricing/)
-[Price calculator](https://calculator.aws/#/addService)
+
+* [Price Details](https://aws.amazon.com/s3/pricing/)
+
+* [Price calculator](https://calculator.aws/#/addService)
+
 1. Storage
 	- First 50TB/month -> 0.023$/GB
 	- After 450TB/month -> 0.022$/GB

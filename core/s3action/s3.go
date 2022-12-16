@@ -32,13 +32,10 @@ func NewS3Client() *S3Base {
 
 func (s *S3Base) GetBucketList() ([]types.Bucket, error) {
 	result, err := s.S3Client.ListBuckets(context.TODO(), &s3.ListBucketsInput{})
-	var buckets []types.Bucket
 	if err != nil {
 		log.Printf("Couldn't list buckets for your account. Here's why: %v\n", err)
-	} else {
-		buckets = result.Buckets
 	}
-	return buckets, err
+	return result.Buckets, err
 }
 
 func (s *S3Base) BucketExists(bucketName string) (bool, error) {
