@@ -531,7 +531,7 @@ func (s *S3Base) PutPublicObjectAcl(bucketName, objectKey string) error {
 ```
 
 ### Object Version Control
-Version control, as its name suggests, uses version control to control it. Its advantage is that when deleting an object, it is not physically deleted, but a mark is placed on the deletion. Therefore, if the file is deleted by an operation other than the user, it can be restored through version control.
+Version control, as the name suggests, is to use version control to control it. Its advantage is that when deleting an object, it is not physically deleted, but a mark is placed on the deleted place. Therefore, if a file is deleted by an accidental operation, it can be restored through version control.
 
 If the user is overwriting this object, it is actually creating a new version of this object.
 
